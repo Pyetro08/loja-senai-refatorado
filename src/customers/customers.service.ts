@@ -1,37 +1,37 @@
-import { Injectable } from "@nestjs/common";
-import { UpsertDTO } from "./dto/upsert.dto";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Customer } from './customer.entity';
 
 @Injectable()
-export class CustomersService {
-   private customers: Array<any>;
-   // método especial - ele é chamado na criação
-   constructor() {
-     this.customers = [
-        {
-            "id": 1,
-            "nome": "Félix",
-            "email": "felix@gmail.com",
-            "idade": 18
-        }
-     ]
-   }
+export class CustomerService {
+  constructor(
+    @InjectRepository(Customer)
+    private customerRepository: Repository<Customer>,
+  ) {}
 
-   get() {
-    return this.customers;
-   }
+  async findAll(): Promise<Customer[]> {
+    return this.customerRepository.find();
+  }
 
-   create(customer: UpsertDTO) {
-     let id = 1;
-     if(this.customers.length != 0) {
-        id = this.customers[this.customers.length - 1].id + 1
-     }
-     this.customers.push({
-      "id": id,
-      ...customer
-     });
+  async create(data: Partial<Customer>): Promise<Customer> {
+    const newCustomer = this.customerRepository.create(data);
+    return this.customerRepository.save(newCustomer);
+  }
 
-     return {
-        "message": "Salvo com sucesso"
-     };
-   }
+  async update(id: number, data: Partial<Customer>): Promise<Customer> {
+    const customer = await this.customerRepository.findOneBy({ id });
+    if (!customer) {
+      throw new NotFoundException(`Cliente com ID ${id} não encontrado`);
+    }
+    Object.assign(customer, data);
+    return this.customerRepository.save(customer);
+  }
+
+  async delete(id: number): Promise<void> {
+    const result = await this.customerRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Cliente com ID ${id} não encontrado`);
+    }
+  }
 }
