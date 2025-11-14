@@ -1,14 +1,19 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
+@Entity('products')
+export class Product {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-@Entity()
-export class Product{
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column({ length: 100 })
+  name: string;
 
-    @Column()
-    name: string;
+  @Column('decimal', { precision: 10, scale: 2 })
+  price: number;
 
-    @Column('decimal', {precision: 10, scale: 2})
-    price: number;
+  @Column({ length: 50 })
+  category: string;
+
+  @Column({ default: true })
+  available: boolean;
 }

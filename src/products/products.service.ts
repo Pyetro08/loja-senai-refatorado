@@ -1,64 +1,33 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { UpsertProductDTO } from './dto/upsert-product.dto';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Product } from './products.entity';
 import { Repository } from 'typeorm';
+import { Product } from './products.entity';
 
 @Injectable()
 export class ProductsService {
-    private products: Array<any>;
-    
-    constructor(
-        @InjectRepository(Product)
-        private productsRepository: Repository<Product>
-     ) {
-        this.products = [
-        {
-            "id": 1,
-            "name": "Biscoito"
-        },
-        {
-            "id": 2,
-            "name": "Morango"
-        }
-        ]
+  constructor(
+    @InjectRepository(Product)
+    private productsRepository: Repository<Product>,
+  ) {}
 
-    }
+  findAll() {
+    return this.productsRepository.find();
+  }
 
-    findAll() {
-        return this.productsRepository.find;
-    }
+  findOne(id: number) {
+    return this.productsRepository.findOneBy({ id });
+  }
 
-    async create( product: UpsertProductDTO) {
-        const newProduct = this.productsRepository.create(product);
-       await this.productsRepository.save(newProduct);
+  create(data: Partial<Product>) {
+    const product = this.productsRepository.create(data);
+    return this.productsRepository.save(product);
+  }
 
-        return {
-            "message": "Produto Criado!"
-        };
-    }
+  update(id: number, data: Partial<Product>) {
+    return this.productsRepository.update(id, data);
+  }
 
-    update(id: number, product: UpsertProductDTO) {
-        // [ 1, 2, 3, 4 ]
-        const index = this.products.findIndex((p) => p.id == id);
-        if(index == -1) {
-            throw new NotFoundException('Produto não encontrado!')
-        }
-        this.products[index] = {
-            'id': this.products[index].id,
-            // spread
-            ...product
-        }
-        
-        return {
-            "message": "Produto Atualizado!"
-        };
-    }
-
-    delete(id: number) {
-        this.products = this.products.filter((p) => p.id != id);
-        return {
-            "message": "Produto removido!"
-        }
-    }
+  delete(id: number) {
+    return this.productsRepository.delete(id);
+  }
 }

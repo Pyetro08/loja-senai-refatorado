@@ -1,4 +1,3 @@
-import { Product } from './src/products/products.entity';
 import { DataSource } from 'typeorm';
 
 export default new DataSource({
@@ -7,7 +6,7 @@ export default new DataSource({
   port: 3306,
   username: 'root',
   password: '',
-  database: 'curso',
-  entities: [Product],
+  database: 'loja_senai',
+  entities: ['**/*.entity.ts'],
   migrations: ['dist/migrations/*.js'],
 });
