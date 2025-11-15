@@ -7,6 +7,6 @@ export default new DataSource({
   username: 'root',
   password: '',
   database: 'loja_senai',
-  entities: ['**/*.entity.ts'],
+  entities: ['src/**/*.entity.ts'],
   migrations: ['dist/migrations/*.js'],
 });

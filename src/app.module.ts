@@ -3,6 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CustomerModule } from './customers/customers.module';
 import { Customer } from './customers/customer.entity';
 import { FuncionarioModule } from './funcionario/funcionario.module';
+import { VendaModule } from './venda/venda.module';
+import { ItemVenda } from './venda/itemVenda.entity';
 
 
 @Module({
@@ -19,7 +21,8 @@ import { FuncionarioModule } from './funcionario/funcionario.module';
     }),
     CustomerModule,
     FuncionarioModule,
-    
+    VendaModule,
+    ItemVenda,
   ],
 })
 export class AppModule {}

@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
-import { FuncionarioService } from './funcionario.service';
+import { VendaService } from './venda.service';
 
-@Controller('funcionarios')
-export class FuncionarioController {
-  constructor(private service: FuncionarioService) {}
+@Controller('vendas')
+export class VendaController {
+  constructor(private service: VendaService) {}
 
   @Get()
   findAll() {

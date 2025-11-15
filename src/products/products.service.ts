@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Product } from './products.entity';
+import { Produto } from './products.entity';
 
 @Injectable()
 export class ProductsService {
   constructor(
-    @InjectRepository(Product)
-    private productsRepository: Repository<Product>,
+    @InjectRepository(Produto)
+    private productsRepository: Repository<Produto>,
   ) {}
 
   findAll() {
@@ -18,12 +18,12 @@ export class ProductsService {
     return this.productsRepository.findOneBy({ id });
   }
 
-  create(data: Partial<Product>) {
+  create(data: Partial<Produto>) {
     const product = this.productsRepository.create(data);
     return this.productsRepository.save(product);
   }
 
-  update(id: number, data: Partial<Product>) {
+  update(id: number, data: Partial<Produto>) {
     return this.productsRepository.update(id, data);
   }
 

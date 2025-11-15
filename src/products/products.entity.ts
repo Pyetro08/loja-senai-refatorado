@@ -1,19 +1,20 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { ItemVenda } from 'src/venda/itemVenda.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
-@Entity('products')
-export class Product {
+@Entity()
+export class Produto {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 100 })
-  name: string;
+  @Column()
+  nome: string;
 
   @Column('decimal', { precision: 10, scale: 2 })
-  price: number;
+  preco: number;
 
-  @Column({ length: 50 })
-  category: string;
-
-  @Column({ default: true })
-  available: boolean;
+  @Column()
+  estoque: number;
+  
+  @OneToMany(() => ItemVenda, (item) => item.produto, { cascade: true })
+  itens: ItemVenda[];
 }
